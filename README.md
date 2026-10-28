@@ -59,19 +59,19 @@ Capture `S2-2.png`, `S2-3.png`, and `S2-4.png` with the required visible evidenc
 
 ## Stage 3: scan and harden
 
-The current Dockerfile and dependency pins are the hardened configuration for this stage. First build the deliberately old Stage 1 image as `fest-backend:0.1` and save your own Trivy output:
+The current Dockerfile and dependency pins are the hardened configuration for this stage. Trivy is run from the pinned official container image `aquasec/trivy:0.76.1`, with the Docker socket and a named database cache mounted. The Stage 1 image was scanned and its output is saved here:
 
 ```powershell
 New-Item -ItemType Directory -Force reports | Out-Null
-trivy image fest-backend:0.1 | Tee-Object reports/trivy-before.txt
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy-cache:/root/.cache aquasec/trivy:0.76.1 image fest-backend:0.1 | Tee-Object reports/trivy-before.txt
 ```
 
 Build the hardened image and capture the scan result:
 
 ```powershell
 docker build -t fest-backend:0.2 ./backend
-trivy image fest-backend:0.2 | Tee-Object reports/trivy-after.txt
-trivy image --severity CRITICAL --ignore-unfixed --exit-code 1 fest-backend:0.2
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy-cache:/root/.cache aquasec/trivy:0.76.1 image fest-backend:0.2 | Tee-Object reports/trivy-after.txt
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy-cache:/root/.cache aquasec/trivy:0.76.1 image --severity CRITICAL --ignore-unfixed --exit-code 1 fest-backend:0.2
 $LASTEXITCODE
 ```
 
@@ -79,8 +79,8 @@ Use the actual Trivy results and `docker image ls` size values in the README. Do
 
 | Image | CRITICAL | HIGH | Size |
 |---|---:|---:|---:|
-| `fest-backend:0.1` | fill from report | fill from report | fill from Docker |
-| `fest-backend:0.2` | fill from report | fill from report | fill from Docker |
+| `fest-backend:0.1` | 234 | 2,249 | 1.61 GB |
+| `fest-backend:0.2` | 0 | 53 | 217 MB |
 
 Capture `S3-1.png` and `S3-3.png`. Trivy reports are generated evidence and should be committed after you run the scans.
 
@@ -97,5 +97,6 @@ Add `*.key` to `.gitignore` (already included), generate a password-protected Co
 ## AI tools used
 
 - OpenAI Codex: used to read the provided assessment PDF and scaffold the application, Docker configuration, and this checklist. All commands, scans, registry operations, signatures, screenshots, and submission evidence must be produced by you on your own machine.
+
 
 
