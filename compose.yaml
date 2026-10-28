@@ -18,12 +18,10 @@ services:
     restart: unless-stopped
 
   backend:
-    image: fest-backend:0.2
-    build:
-      context: ./backend
+    image: ${DOCKERHUB_USER:?Set DOCKERHUB_USER in .env}/fest-backend:1.0.0
     environment:
       REGNO: ${REGNO:?Set REGNO in .env}
-      APP_VERSION: ${APP_VERSION:-0.2}
+      APP_VERSION: 1.0.0
       DB_HOST: db
       DB_NAME: festpass
       DB_USER: festpass
@@ -55,3 +53,5 @@ networks:
 
 volumes:
   postgres-data:
+
+

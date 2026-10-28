@@ -1,10 +1,11 @@
-# Stage 3+ secure backend image. For Stage 1, temporarily use the documented
-# Python 3.9 base and the starter requirements, then return to this Dockerfile.
+# Stage 3+ secure backend image. The version can be set when building a release.
 FROM python:3.13.15-slim-trixie
 
+ARG APP_VERSION=dev
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
+    PIP_NO_CACHE_DIR=1 \
+    APP_VERSION=${APP_VERSION}
 
 WORKDIR /app
 
