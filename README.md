@@ -98,11 +98,4 @@ Add `*.key` to `.gitignore` (already included), generate a password-protected Co
 
 - OpenAI Codex: used to read the provided assessment PDF and scaffold the application, Docker configuration, and this checklist. All commands, scans, registry operations, signatures, screenshots, and submission evidence must be produced by you on your own machine.
 
-## Incomplete steps
-
-- Add your name, REGNO, PORT, Docker Hub username, repository link, and actual 1.0.0 digest.
-- Run the assessment commands and add your own Trivy reports and unedited screenshots under `screenshots/`.
-- Add the before-and-after vulnerability counts and image sizes from your actual scan/build.
-- Record any step you could not complete, one line each.
-- Commit after each stage, push once near the end, and submit your public GitHub repository URL.
 
